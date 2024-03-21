@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "BlabApp",
+    "name": "HoneyRain",
     "slug": "BlabApp",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -15,13 +15,15 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.honeyrain.blab"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.honeyrain.blab"
     },
     "web": {
       "favicon": "./assets/favicon.png"
