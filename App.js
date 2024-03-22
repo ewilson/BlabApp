@@ -1,4 +1,4 @@
-import {StyleSheet, View} from 'react-native';
+import {Button, FlatList, StyleSheet, Text, View} from 'react-native';
 import {useState} from "react";
 import {GoogleSignin, GoogleSigninButton} from '@react-native-google-signin/google-signin';
 import {GOOGLE_ANDROID_CLIENT_ID, GOOGLE_IOS_CLIENT_ID, GOOGLE_WEB_CLIENT_ID} from '@env';
@@ -19,6 +19,15 @@ export default function App() {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const [signinInProgress, isSigninInProgress] = useState(false);
+  const [users, setUsers] = useState([]);
+  const getUsers = async () => {
+    await fetch('http://10.0.2.2:8080/user')
+        .then(response => response.json())
+        .then(json => {
+          setUsers(json._embedded.userList);
+        })
+        .catch(error => console.error(error));
+  }
   const handleGoogleLogin = async () => {
     setLoading(true);
     try {
@@ -59,9 +68,22 @@ export default function App() {
         onPress={handleGoogleLogin}
         disabled={signinInProgress}
       />
+      <Button title={'Get Users'} onPress={getUsers} />
+      <FlatList
+          data={users}
+          renderItem={({item}) => <Item title={item.userName} />}
+          keyExtractor={item => item.id}
+      />
+
     </View>
   );
 }
+const Item = ({title}) => (
+    <View style={styles.item}>
+      <Text style={styles.title}>{title}</Text>
+    </View>
+);
+
 
 async function handleGoogleLogout() {
   try {
@@ -74,7 +96,7 @@ async function handleGoogleLogout() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#9df',
+    backgroundColor: '#adf',
     alignItems: 'center',
     justifyContent: 'center',
   }
